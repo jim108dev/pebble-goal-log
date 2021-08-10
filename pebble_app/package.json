@@ -1,0 +1,31 @@
+{
+  "name": "goal-log",
+  "author": "MakeAwesomeHappen",
+  "version": "1.0.0",
+  "keywords": [
+    "pebble-app"
+  ],
+  "private": true,
+  "dependencies": {
+    "@smallstoneapps/data-processor": "^2.1.1",
+    "pebble-packet": "^1.3.2"
+  },
+  "pebble": {
+    "displayName": "goal-log",
+    "uuid": "143631a5-d709-44d2-8217-40abbfa8d010",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "aplite"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "messageKeys": [
+      "dummy"
+    ],
+    "resources": {
+      "media": []
+    }
+  }
+}

@@ -1,0 +1,4 @@
+id;text;count_names;count_values;goal;start;stop;step
+1;Pec Deck;kg,Reps,Reps,Reps;16,12,10,10;10 reps at 20 kg;1;30;3
+2;Lat Pulldown;kg,Reps,Reps,Reps;60,10,8,8;10 reps at 80 kg;1;30;3
+3;Meditation;Slot1,Slot2;15,10;20 min for 100 days;1;30;1
