@@ -33,3 +33,8 @@ _testmain.go
 
 build
 node_modules
+
+data/log.csv
+data/upload.csv
+data/reference.csv
+data/download.csv
