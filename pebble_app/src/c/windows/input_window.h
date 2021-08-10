@@ -29,4 +29,5 @@ typedef struct InputConfig
 } InputConfig;
 
 void input_window_init(InputConfig *config);
+void input_window_deinit();
 static void update_value_layer(uint8_t i);

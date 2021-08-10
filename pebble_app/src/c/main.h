@@ -2,7 +2,7 @@
 
 #include <pebble.h>
 #include "time.h"
-
+#include <@smallstoneapps/linked-list/linked-list.h>
 #include "modules/types.h"
 #include "modules/util.h"
 #include "modules/download.h"
@@ -14,6 +14,7 @@
 
 static void on_finish_record(uint8_t values[], void *data);
 static void show_first_window();
+static void show_last_window();
 static void load_records();
 static void on_show_goals(void *data);
 static void on_show_goal_detail(uint8_t select_num, void *data);

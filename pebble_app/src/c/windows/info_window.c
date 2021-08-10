@@ -66,10 +66,13 @@ static void window_unload(Window *window)
   text_layer_destroy(s_main_layer);
 }
 
-static void info_window_deinit()
+void info_window_deinit()
 {
-  window_destroy(s_window);
-  s_window = NULL;
+  if (s_window != NULL)
+  {
+    window_destroy(s_window);
+    s_window = NULL;
+  }
   FREE_SAFE(s_config);
 }
 
@@ -77,7 +80,6 @@ void info_window_init(InfoConfig *config)
 {
   if (s_window != NULL)
   {
-    window_stack_pop_all(true);
     info_window_deinit();
   }
 

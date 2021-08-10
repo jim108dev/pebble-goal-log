@@ -6,7 +6,7 @@ static DataLoggingSessionRef s_session_ref = NULL;
 
 void dlog_init()
 {
-  if (!s_session_ref)
+  if (s_session_ref == NULL)
   {
     s_session_ref = data_logging_create(LOG_TAG, DATA_LOGGING_BYTE_ARRAY, sizeof(DLogRecord), true);
   }
@@ -20,7 +20,7 @@ void dlog_log(Record record)
   {
     o.values[i] = record.values[i];
   }
-  o.stop = record.stop;
+  o.date = record.date;
 
   
   DataLoggingResult result = data_logging_log(s_session_ref, &o, 1);
@@ -35,7 +35,7 @@ void dlog_log(Record record)
 
 void dlog_deinit()
 {
-  if (s_session_ref)
+  if (s_session_ref != NULL)
   {
     data_logging_finish(s_session_ref);
     s_session_ref = NULL;

@@ -23,3 +23,4 @@ typedef struct InfoConfig
 } InfoConfig;
 
 void info_window_init(InfoConfig *config);
+void info_window_deinit();

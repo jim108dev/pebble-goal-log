@@ -10,7 +10,7 @@ typedef struct DLogRecord
 {
     char id[MAX_SMALL_TEXT_LEN];      //  20 bytes
     uint8_t values[MAX_INPUTS];         //   1 byte
-    time_t stop;                        //   4 bytes
+    time_t date;                        //   4 bytes
 } DLogRecord;                       //  29 bytes
 
 

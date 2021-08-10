@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
- Create a new file for the next session based on the history.
+ Create a new file for the next session based on the log.
 """
 
 from datetime import date
@@ -12,7 +12,7 @@ from pandas.core.dtypes.missing import isna
 from algo_sm2 import supermemo_2
 from util import get_conf
 
-OUTPUT_COLUMNS = ["id", "text", "count_names", "count_values"]
+OUTPUT_COLUMNS = ["id", "text", "labels", "values", "goal"]
 
 NOW = date.today()
 
@@ -24,28 +24,9 @@ def countdown(last_stop, waiting_period):
 
 
 def main(conf):
-    df = pd.read_csv(conf.history_filename, sep=';')
+    df = pd.read_csv(conf.reference_filename, sep=';')
 
-    df['waiting_period'] = df['feedback_history'].apply(
-        lambda cs: 0 if isna(cs) else supermemo_2([int(v) for v in str(cs).split('|')]))
-
-    df['countdown'] = df.apply(lambda x: 0 if isna(x['stop_history']) else countdown(
-        x['stop_history'].split('|')[-1], x['waiting_period']), axis=1)
-
-    df = df[df['countdown'] <= 1]
-    df = df.nsmallest(conf.max_records, 'countdown')
-
-    ref_df = pd.read_csv(conf.reference_filename, sep=';')
-
-    df = df.merge(ref_df, on='id')
-
-    df['feedback'] = 0
-    df['start'] = 0
-    df['stop'] = 0
-
-    print(df.head())
-
-    df.to_csv(path_or_buf=conf.next_session_filename, columns=OUTPUT_COLUMNS, index=False, sep=";")
+    df.head(20).to_csv(path_or_buf=conf.next_session_filename, columns=OUTPUT_COLUMNS, index=False, sep=";")
 
 if __name__ == "__main__":
     main(get_conf())

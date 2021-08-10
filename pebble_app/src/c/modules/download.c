@@ -24,7 +24,7 @@ void close_connection()
 }
 static void parse_into_max_inputs(Record *record, char *data)
 {
-  ProcessingState *state = data_processor_create(data, ';');
+  ProcessingState *state = data_processor_create(data, '|');
   uint8_t hmax_inputs = data_processor_count(state);
   record->max_inputs = hmax_inputs < MAX_INPUTS ? hmax_inputs : MAX_INPUTS;
   data_processor_destroy(state);
@@ -32,7 +32,8 @@ static void parse_into_max_inputs(Record *record, char *data)
 
 static void parse_into_labels(Record *record, char *data)
 {
-  ProcessingState *state = data_processor_create(data, ';');
+  DEBUG("Parse %s", data);
+  ProcessingState *state = data_processor_create(data, '|');
 
   for (int i = 0; i < record->max_inputs; i++)
   {
@@ -43,7 +44,8 @@ static void parse_into_labels(Record *record, char *data)
 
 static void parse_into_values(Record *record, char *data)
 {
-  ProcessingState *state = data_processor_create(data, ';');
+  DEBUG("Parse %s", data);
+  ProcessingState *state = data_processor_create(data, '|');
   for (int i = 0; i < record->max_inputs; i++)
   {
     record->values[i] = data_processor_get_int(state);
@@ -53,21 +55,24 @@ static void parse_into_values(Record *record, char *data)
 
 static void parse_into_record(Record *record, char *data)
 {
+  DEBUG("Parse %s", data);
   ProcessingState *state = data_processor_create(data, ';');
   small_textcpy(record->id, data_processor_get_string(state));
+  textcpy(record->label, data_processor_get_string(state));
 
   char labels_data[MAX_TEXT_LEN];
   textcpy(labels_data, data_processor_get_string(state));
+  parse_into_max_inputs(record, labels_data);
   parse_into_labels(record, labels_data);
 
   char values_data[MAX_TEXT_LEN];
   textcpy(values_data, data_processor_get_string(state));
-  parse_into_values(record, labels_data);
+  parse_into_values(record, values_data);
 
   textcpy(record->goal, data_processor_get_string(state));
   record->left = data_processor_get_int(state);
 
-  record->stop = 0;
+  record->date = 0;
 
   data_processor_destroy(state);
 }
@@ -141,7 +146,6 @@ void download_deinit()
   close_connection();
   if (s_records != NULL)
   {
-    free(s_records);
-    s_records = NULL;
+    FREE_SAFE(s_records);
   }
 }

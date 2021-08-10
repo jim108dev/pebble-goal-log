@@ -17,9 +17,8 @@ def get_conf():
 
 
     conf.reference_filename = parser.get('reference', 'filename')
-    conf.history_filename = parser.get('history', 'filename')
+    conf.log_filename = parser.get('log', 'filename')
     conf.feedback_filename = parser.get('feedback', 'filename')
     conf.next_session_filename = parser.get('next_session', 'filename')
-    conf.max_records = parser.getint('next_session', 'max_records')
 
     return conf

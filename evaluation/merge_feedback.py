@@ -14,30 +14,7 @@ from pandas.core.dtypes.missing import isna
 
 from util import get_conf
 
-OUTPUT_COLUMNS = ["id", "feedback_history", "start_history", "stop_history"]
-
-#https://note.nkmk.me/en/python-check-int-float/
-def is_integer(n):
-    try:
-        float(n)
-    except ValueError:
-        return False
-    else:
-        return float(n).is_integer()
-
-def to_string(x):
-    return str(int(x)) if is_integer(x) else x
-
-
-def append(xs, x):
-
-    if isna(x):
-        return to_string(xs)
-
-    if isna(xs):
-        return to_string(x)
-
-    return to_string(xs) + '|' + to_string(x)
+OUTPUT_COLUMNS = ["id", "values", "date"]
 
 
 def main(conf):
@@ -46,22 +23,11 @@ def main(conf):
         return
 
     feedback_df = pd.read_csv(conf.feedback_filename, sep=';')
-    history_df = pd.read_csv(conf.history_filename, sep=';')
+    log_df = pd.read_csv(conf.log_filename, sep=';')
 
-    feedback_df["start"] = feedback_df["start"].astype(int).astype(str)
-    feedback_df["stop"] = feedback_df["stop"].astype(int).astype(str)
+    df = pd.concat([log_df, feedback_df])
 
-    df = history_df.merge(feedback_df, on='id', how="left")
-
-    df["feedback_history"] = df.apply(lambda x: append(
-        x["feedback_history"], x["feedback"]), axis=1)
-    df["start_history"] = df.apply(lambda x: append(
-        x["start_history"], x["start"]), axis=1)
-    df["stop_history"] = df.apply(lambda x: append(
-        x["stop_history"], x["stop"]), axis=1)
-
-    print(df.head())
-    df.to_csv(path_or_buf=conf.history_filename,
+    df.to_csv(path_or_buf=conf.log_filename,
               columns=OUTPUT_COLUMNS, index=False, sep=";")
 
     shutil.move(conf.feedback_filename, tempfile.gettempdir())

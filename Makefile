@@ -16,7 +16,7 @@ EVAL_PATH := ./evaluation
 VENV_PATH := $(EVAL_PATH)/venv/bin
 PYTHON3 := $(VENV_PATH)/python
 
-ALIGN_HISTORY := $(PYTHON3) $(EVAL_PATH)/align_history.py
+ALIGN_LOG := $(PYTHON3) $(EVAL_PATH)/align_log.py
 PREPARE := $(PYTHON3) $(EVAL_PATH)/prepare_next_session.py
 MERGE := $(PYTHON3) $(EVAL_PATH)/merge_feedback.py
 EVAL_CONF := $(EVAL_PATH)/config.ini
@@ -46,8 +46,8 @@ download_watch:
 	$(DOWNLOAD) $(CONN_CONF_WATCH)
 
 # Evaluation
-align_history:
-	$(ALIGN_HISTORY) $(EVAL_CONF)
+align_log:
+	$(ALIGN_LOG) $(EVAL_CONF)
 
 prepare_next_session:
 	$(PREPARE) $(EVAL_CONF)

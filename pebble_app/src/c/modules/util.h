@@ -24,10 +24,11 @@ void record_to_string(char buf[MAX_TEXT_LEN], Record r);
 #define ERROR(...) app_log(APP_LOG_LEVEL_ERROR, __FILE__, __LINE__, __VA_ARGS__)
 #endif
 
-#define DEBUG_RECORD(record) char debug_buf[MAX_TEXT_LEN]; record_to_string(debug_buf, record); DEBUG(debug_buf);
+#define DEBUG_RECORD(record) char debug_buf[100]; record_to_string(debug_buf, record); DEBUG(debug_buf);
 
 #define FREE_SAFE(ptr) if (NULL != ptr) { free(ptr); ptr = NULL; }
 
 char *textcpy(char * dest, const char * src);
 char *small_textcpy(char * dest, const char * src);
 void sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max);
+bool ll_free_callback(void *object, void *context);

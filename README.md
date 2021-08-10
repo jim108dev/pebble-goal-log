@@ -13,7 +13,7 @@ The Pebble app works without a smartphone. The data is exchanged with a pc. Nece
 1. Install repository 's software
 
     ```sh
-    git clone https://github.com/jim108dev/pebble-flashcards.git
+    git clone https://github.com/jim108dev/pebble-goal-log.git
     ```
 
 1. Create a Python 3 environment
@@ -30,12 +30,12 @@ The Pebble app works without a smartphone. The data is exchanged with a pc. Nece
 
 1. Adjust paths in `Makefile` accordingly.
 
-1. Save questions and and answers in `data/reference.csv`. An example is given in `data/reference.example.csv`.
+1. Setup goals in `data/reference.csv`. An example is given in `data/reference.example.csv`.
 
-1. Align the history file
+1. Align the log file
 
     ```sh
-    make align_history
+    make align_log
     ```
 
 ## Usage
