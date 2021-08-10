@@ -28,7 +28,7 @@ void record_to_string(char buf[MAX_TEXT_LEN], Record r);
 
 #define FREE_SAFE(ptr) if (NULL != ptr) { free(ptr); ptr = NULL; }
 
-char *textcpy(char * dest, const char * src);
-char *small_textcpy(char * dest, const char * src);
-void sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max);
+int textcpy(char * dest, const char * src);
+int small_textcpy(char * dest, const char * src);
+int sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max);
 bool ll_free_callback(void *object, void *context);

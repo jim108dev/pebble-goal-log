@@ -25,23 +25,19 @@ uint8_t packet_get_uint8(DictionaryIterator *inbox_iter, int key)
     return dict_find(inbox_iter, key)->value->uint8;
 }
 
-char *textcpy(char *dest, const char *src)
+int textcpy(char *dest, const char *src)
 {
-    strncpy(dest, src, MAX_TEXT_LEN);
-    dest[MAX_TEXT_LEN - 1] = '\0';
-    return dest;
+    return snprintf(dest, MAX_SMALL_TEXT_LEN, "%s", src);
 }
 
-char *small_textcpy(char *dest, const char *src)
+int small_textcpy(char *dest, const char *src)
 {
-    strncpy(dest, src, MAX_SMALL_TEXT_LEN);
-    dest[MAX_SMALL_TEXT_LEN - 1] = '\0';
-    return dest;
+    return snprintf(dest, MAX_SMALL_TEXT_LEN, "%s", src);
 }
 
-void sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max)
+int sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max)
 {
-    snprintf(text, MAX_SMALL_TEXT_LEN, "%d/%d", num, max);
+    return snprintf(text, MAX_SMALL_TEXT_LEN, "%d/%d", num, max);
 }
 
 
