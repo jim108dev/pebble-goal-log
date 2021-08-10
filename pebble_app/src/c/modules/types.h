@@ -11,14 +11,14 @@ typedef struct Record
 {
     char id[MAX_SMALL_TEXT_LEN];                          //  20 bytes
     char label[MAX_TEXT_LEN];                             //  30 bytes
-    uint8_t max_inputs;                                   //   1 byte
-    char labels[MAX_INPUTS][MAX_TEXT_LEN];                // 120 bytes
+    uint8_t max_inputs;
+    char labels[MAX_INPUTS][MAX_TEXT_LEN];                //  90 bytes
     uint8_t values[MAX_INPUTS];                           //   3 bytes
     char goal[MAX_TEXT_LEN];                              //  30 bytes
     uint8_t left;                                         //   1 byte
     time_t date;                                          //   4 bytes
-    bool done;                                            //   1 byte
-} Record;                                                 // 210 bytes
+    bool done;
+} Record;                                                 // 174 bytes
 
 typedef void (*DownloadSuccessCallback)(Record records[], uint8_t max_records);
 typedef void (*DownloadFailCallback)(char message[MAX_TEXT_LEN]);

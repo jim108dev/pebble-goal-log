@@ -34,7 +34,7 @@ static void load_records()
   uint8_t max_records = pers_read_max_records();
   if (s_record_list != NULL)
   {
-    //linked_list_foreach(s_record_list, ll_free_callback, NULL);
+    linked_list_foreach(s_record_list, ll_free_callback, NULL);
     linked_list_clear(s_record_list);
   }
   s_record_list = linked_list_create_root();
@@ -50,6 +50,8 @@ static void load_records()
 
 static void on_show_goals(void *data)
 {
+  download_deinit();
+
   uint8_t max_records = linked_list_count(s_record_list);
 
   MenuConfig *c = malloc(sizeof(MenuConfig));
@@ -77,14 +79,14 @@ static void on_show_goal_detail(uint8_t select_num, void *data)
   InputConfig *c = malloc(sizeof(InputConfig));
   c->action = on_finish_record;
   s_current_num = select_num;
-  strcpy(c->head_left, record->label);
+  strcpy(c->head_left, record->id);
   sprint_progress(c->head_right, select_num + 1, max_records);
   for (int i = 0; i < record->max_inputs; i++)
   {
     strcpy(c->labels[i], record->labels[i]);
     c->values[i] = record->values[i];
   }
-  strcpy(c->main, record->goal);
+  snprintf(c->main, MAX_TEXT_LEN, "%.14s: %.14s", record->label, record->goal);
   c->max_inputs = record->max_inputs;
 
   input_window_init(c);
@@ -163,32 +165,31 @@ static void init()
 {
   AppLaunchReason appLaunchReason = launch_reason();
 
-  pers_sweep();
   load_records();
+  show_first_window();
   if (appLaunchReason == APP_LAUNCH_PHONE)
   {
-    show_first_window();
+    pers_sweep();
     download_init(download_success, download_fail);
     // If app was launched by phone and close to last app is disabled, always exit to the watchface instead of to the menu
     exit_reason_set(APP_EXIT_ACTION_PERFORMED_SUCCESSFULLY);
     return;
   }
-  show_first_window();
 }
 
 static void deinit()
 {
+
   if (s_record_list != NULL)
   {
-    //linked_list_foreach(s_record_list, ll_free_callback, NULL);
-    //linked_list_clear(s_record_list);
+    linked_list_foreach(s_record_list, ll_free_callback, NULL);
+    linked_list_clear(s_record_list);
   }
   menu_window_deinit();
   info_window_deinit();
   input_window_deinit();
   dlog_deinit();
   download_deinit();
-
 }
 
 int main()

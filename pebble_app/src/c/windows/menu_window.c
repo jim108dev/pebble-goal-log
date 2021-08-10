@@ -21,7 +21,7 @@ static int16_t get_cell_height_callback(struct MenuLayer *menu_layer, MenuIndex 
 }
 
 static void select_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *context)
-{   
+{
     s_config->action(cell_index->row, s_config->extra);
 }
 
@@ -68,7 +68,8 @@ void menu_window_deinit()
 {
     if (s_window != NULL)
     {
-        window_destroy(s_window);
+        if (window_stack_contains_window(s_window))
+            window_stack_remove(s_window, true);
         s_window = NULL;
     }
     FREE_SAFE(s_config);
@@ -76,10 +77,8 @@ void menu_window_deinit()
 
 void menu_window_init(MenuConfig *config)
 {
-    if (s_window != NULL)
-    {
-        menu_window_deinit();
-    }
+    menu_window_deinit();
+
     s_config = config;
     s_window = window_create();
     window_set_window_handlers(s_window, (WindowHandlers){

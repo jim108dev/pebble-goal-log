@@ -14,8 +14,8 @@ typedef void(InfoDoneCallback)(void *data);
 
 typedef struct InfoConfig
 {
-    char head_left[MAX_TEXT_LEN];
-    char head_right[MAX_TEXT_LEN];
+    char head_left[MAX_SMALL_TEXT_LEN];
+    char head_right[MAX_SMALL_TEXT_LEN];
     char main[80];
     InfoDoneCallback *action;
     void *extra;

@@ -4,11 +4,12 @@
 #include "../modules/util.h"
 
 #define DARK_BACKGROUND true
+#define MAX_MENU_ITEMS 20
 typedef void(ActionCallback)(uint8_t feedback, void *data);
 
 typedef struct MenuConfig
 {
-    char labels[10][30];
+    char labels[MAX_MENU_ITEMS][MAX_SMALL_TEXT_LEN];
     uint8_t max_items;
     ActionCallback *action;
     uint8_t selected;

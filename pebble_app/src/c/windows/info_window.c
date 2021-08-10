@@ -70,6 +70,8 @@ void info_window_deinit()
 {
   if (s_window != NULL)
   {
+    if (window_stack_contains_window(s_window))
+      window_stack_remove(s_window,true);
     window_destroy(s_window);
     s_window = NULL;
   }
@@ -78,10 +80,8 @@ void info_window_deinit()
 
 void info_window_init(InfoConfig *config)
 {
-  if (s_window != NULL)
-  {
-    info_window_deinit();
-  }
+
+  info_window_deinit();
 
   s_window = window_create();
   s_config = config;

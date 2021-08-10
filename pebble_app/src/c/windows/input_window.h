@@ -18,9 +18,9 @@ typedef void(InputDoneCallback)(uint8_t values[], void *data);
 typedef struct InputConfig
 {
     uint8_t max_inputs;
-    char head_left[MAX_TEXT_LEN];
-    char head_right[MAX_TEXT_LEN];
-    char labels[MAX_INPUTS][MAX_TEXT_LEN];
+    char head_left[MAX_SMALL_TEXT_LEN];
+    char head_right[MAX_SMALL_TEXT_LEN];
+    char labels[MAX_INPUTS][MAX_SMALL_TEXT_LEN];
     uint8_t values[MAX_INPUTS];
     char main[MAX_TEXT_LEN];
     InputDoneCallback *action;

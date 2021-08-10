@@ -139,6 +139,8 @@ void input_window_deinit()
 {
   if (s_window != NULL)
   {
+    if (window_stack_contains_window(s_window))
+      window_stack_remove(s_window,true);
     window_destroy(s_window);
     s_window = NULL;
   }
@@ -147,10 +149,7 @@ void input_window_deinit()
 
 void input_window_init(InputConfig *config)
 {
-  if (s_window != NULL)
-  {
-    input_window_deinit();
-  }
+  input_window_deinit();
 
   s_window = window_create();
   s_config = config;
