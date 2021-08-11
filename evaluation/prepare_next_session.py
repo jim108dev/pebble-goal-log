@@ -27,8 +27,7 @@ def is_integer(n):
         return float(n).is_integer()
 
 def countdown(last_processed, waiting_period):
-    dt_last_stop = date.fromtimestamp(int(last_processed))
-    delta = NOW - dt_last_stop
+    delta = NOW - last_processed
     days_past = delta.days
     return waiting_period - days_past
 
@@ -38,6 +37,9 @@ def to_string(x):
 def main(conf):
     r_df = pd.read_csv(conf.reference_filename, sep=';')
 
+    r_df["start"] = pd.to_datetime(r_df['start'].astype('datetime64[ns]'), unit='s')
+    r_df = r_df[r_df["start"]<=NOW]
+
     r_df["stop"] = pd.to_datetime(r_df['stop'].astype('datetime64[ns]'), unit='s')
     r_df = r_df[r_df["stop"]>=NOW]
 
@@ -45,23 +47,24 @@ def main(conf):
 
     l_df.sort_values('date').drop_duplicates(['id'])
 
-    df = r_df.join(l_df, lsuffix="_ref")
+    df = r_df.merge(l_df, how="left")
 
     df["v1"] = df["v1"].apply(to_string)
     df["v2"] = df["v2"].apply(to_string)
     df["v3"] = df["v3"].apply(to_string)
     df["v4"] = df["v4"].apply(to_string)
 
+    df["date"].fillna(0,inplace=True)
     df["last_processed"] = pd.to_datetime(df['date'].astype('datetime64[ns]'), unit='s')
     
+
     df['countdown'] = df.apply(lambda x: 0 if isna(x['last_processed']) else countdown(
         x['last_processed'], x['step']), axis=1)
 
-    df = df[df['countdown'] <= 0]
+    #df = df[df['last_processed'] ++ timedelta(days=180)]
 
     print(df.head())
-    #print(ref_df.dtypes)
-    #exit()
+    exit()
     df.to_csv(path_or_buf=conf.next_session_filename,
                        columns=OUTPUT_COLUMNS, index=False, sep=";")
 
