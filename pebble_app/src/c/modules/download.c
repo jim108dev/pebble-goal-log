@@ -120,7 +120,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context)
   DEBUG("Unknown message received");
 }
 
-static void timeout_timer_handler(void *context)
+static void timer_handler(void *context)
 {
   s_timeout_timer = NULL;
   close_connection();
@@ -138,7 +138,7 @@ void download_init(DownloadSuccessCallback success, DownloadFailCallback fail)
   events_app_message_request_inbox_size(INBOX_SIZE);
   events_app_message_open();
 
-  s_timeout_timer = app_timer_register(TIMEOUT, timeout_timer_handler, NULL);
+  s_timeout_timer = app_timer_register(TIMEOUT, timer_handler, NULL);
 
   DEBUG("Waiting for connection (inbox size = %ld)", INBOX_SIZE);
 }

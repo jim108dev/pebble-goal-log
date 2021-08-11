@@ -7,8 +7,10 @@
 //Private
 #define MAX_INPUTS 4
 #define PADDING 0
-#define ROW_HEIGHT 20
+#define HEAD_HEIGHT 20
+#define ROW_HEIGHT 24
 #define IS_DARK true
+#define COUNT_TIMEOUT 100
 
 static void set_color_theme(TextLayer *layer, bool isInverted);
 
@@ -31,3 +33,7 @@ typedef struct InputConfig
 void input_window_init(InputConfig *config);
 void input_window_deinit();
 static void update_value_layer(uint8_t i);
+static void timer_handler(void *context);
+static void on_up_start(ClickRecognizerRef recognizer, void *context);
+static void on_up_stop(ClickRecognizerRef recognizer, void *context);
+

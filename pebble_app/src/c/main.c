@@ -18,7 +18,7 @@ static void on_finish_record(uint8_t values[], void *data)
   }
   pers_write_record(record, s_current_num);
   dlog_log(*record);
-  //FREE_SAFE(record);
+  FREE_SAFE(record);
   linked_list_remove(s_record_list, s_current_num);
   uint8_t max_records = linked_list_count(s_record_list);
 
@@ -123,7 +123,7 @@ static void show_last_window()
 
   uint8_t max_records = pers_read_max_records();
   DEBUG("Read max_records %d", max_records);
-  
+
   InfoConfig *c = malloc(sizeof(InfoConfig));
   c->action=NULL;
   strcpy(c->main, "All goals done for today. Please run 'pebble_download.py'.");
