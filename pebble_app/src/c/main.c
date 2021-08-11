@@ -99,7 +99,7 @@ static void on_show_goal_detail(uint8_t select_num, void *data)
     strcpy(c->labels[i], record.labels[i]);
     c->values[i] = record.values[i];
   }
-  snprintf(c->main, MAX_TEXT_LEN, "%.14s: %.14s", record.label, record.goal);
+  snprintf(c->main, MAX_TEXT_LEN, "%.14s:\n%.14s", record.label, record.goal);
   c->max_inputs = record.max_inputs;
 
   input_window_init(c);

@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include <pebble-packet/pebble-packet.h>
+#include <@smallstoneapps/data-processor/data-processor.h>
 
 uint8_t packet_get_uint8(DictionaryIterator *inbox_iter, int key);
 void time_to_string(char buf[MAX_TEXT_LEN], time_t rawtime);
@@ -32,3 +33,5 @@ int textcpy(char * dest, const char * src);
 int small_textcpy(char * dest, const char * src);
 int sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max);
 bool ll_free_callback(void *object, void *context);
+int dp_fill_text(char *dest, ProcessingState* state);
+int dp_fill_small_text(char *dest, ProcessingState* state);

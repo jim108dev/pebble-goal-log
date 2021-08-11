@@ -22,61 +22,40 @@ void close_connection()
     s_app_message_handle = NULL;
   }
 }
-static void parse_into_max_inputs(Record *record, char *data)
-{
-  ProcessingState *state = data_processor_create(data, '|');
-  uint8_t hmax_inputs = data_processor_count(state);
-  record->max_inputs = hmax_inputs < MAX_INPUTS ? hmax_inputs : MAX_INPUTS;
-  data_processor_destroy(state);
-}
 
-static void parse_into_labels(Record *record, char *data)
+static uint8_t get_max_inputs(Record record)
 {
-  DEBUG("Parse %s", data);
-  ProcessingState *state = data_processor_create(data, '|');
-
-  for (int i = 0; i < record->max_inputs; i++)
+  uint8_t result = MAX_INPUTS;
+  for (int i = 0; i < MAX_INPUTS; i++)
   {
-    small_textcpy(record->labels[i], data_processor_get_string(state));
+    if (strlen(record.labels[i]) == 0){
+      result = i;
+      break;
+    }
   }
-  data_processor_destroy(state);
+  return result;
 }
 
-static void parse_into_values(Record *record, char *data)
-{
-  DEBUG("Parse %s", data);
-  ProcessingState *state = data_processor_create(data, '|');
-  for (int i = 0; i < record->max_inputs; i++)
-  {
-    record->values[i] = data_processor_get_int(state);
-  }
-  data_processor_destroy(state);
-}
-
-static void parse_into_record(Record *record, char *data)
+static void parse_data(Record *record, char *data)
 {
   DEBUG("Parse %s", data);
   ProcessingState *state = data_processor_create(data, ';');
-  small_textcpy(record->id, data_processor_get_string(state));
-  textcpy(record->label, data_processor_get_string(state));
+  dp_fill_small_text(record->id, state);
+  dp_fill_small_text(record->label, state);
 
-  uint8_t combined_len = MAX_INPUTS*(MAX_SMALL_TEXT_LEN+1);
-  char labels_data[combined_len];
-
-  snprintf(labels_data, combined_len, "%s", data_processor_get_string(state));
-  parse_into_max_inputs(record, labels_data);
-  parse_into_labels(record, labels_data);
-
-  char values_data[MAX_INPUTS*(MAX_SMALL_TEXT_LEN+1)];
-  snprintf(values_data, combined_len, "%s", data_processor_get_string(state));
-  parse_into_values(record, values_data);
-
-  textcpy(record->goal, data_processor_get_string(state));
+  for (int i = 0; i < MAX_INPUTS; i++)
+  {
+    dp_fill_small_text(record->labels[i], state);
+    record->values[i] = data_processor_get_int(state);
+  }
+  dp_fill_small_text(record->goal, state);
   record->left = data_processor_get_int(state);
+
+  data_processor_destroy(state);
 
   record->date = 0;
 
-  data_processor_destroy(state);
+  record->max_inputs = get_max_inputs(*record);
 }
 
 static void inbox_received_handler(DictionaryIterator *iter, void *context)
@@ -102,7 +81,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context)
       return;
     }
 
-    parse_into_record(&s_records[s_num_received], data);
+    parse_data(&s_records[s_num_received], data);
 
     DEBUG_RECORD(s_records[s_num_received]);
 

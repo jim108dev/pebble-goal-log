@@ -2,7 +2,7 @@
 
 void record_to_string(char buf[], Record r)
 {
-    snprintf(buf, 100, "Record ('%s';'%.5s...';%d;'%.5s...',%d;'%.5s...';%ld)", r.id, r.label, r.max_inputs, r.labels[0], r.values[0], r.goal, r.date);
+    snprintf(buf, 100, "Record ('%s';'%.5s...';'%.5s...',%d;'%.5s...';%ld)", r.id, r.label, r.labels[0], r.values[0], r.goal, r.date);
 }
 
 void time_to_string(char buf[MAX_TEXT_LEN], time_t rawtime)
@@ -32,7 +32,7 @@ int textcpy(char *dest, const char *src)
 
 int small_textcpy(char *dest, const char *src)
 {
-    return snprintf(dest, MAX_SMALL_TEXT_LEN, "%s", src);
+    return snprintf(dest, MAX_TEXT_LEN, "%s", src);
 }
 
 int sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max)
@@ -44,4 +44,18 @@ int sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max)
 bool ll_free_callback(void *object, void *context){
   FREE_SAFE(object);
   return true;
+}
+
+int dp_fill_text(char *dest, ProcessingState* state){
+    char *buf = data_processor_get_string(state);
+    int n = textcpy(dest, buf);
+    free(buf);
+    return n;
+}
+
+int dp_fill_small_text(char *dest, ProcessingState* state){
+    char *buf = data_processor_get_string(state);
+    int n = small_textcpy(dest, buf);
+    free(buf);
+    return n;
 }

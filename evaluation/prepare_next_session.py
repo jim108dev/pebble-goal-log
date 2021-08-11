@@ -12,7 +12,7 @@ from pandas.core.dtypes.missing import isna
 from algo_sm2 import supermemo_2
 from util import get_conf
 
-OUTPUT_COLUMNS = ["id", "text", "labels", "values", "goal"]
+OUTPUT_COLUMNS = ["id", "label", "labels", "values", "goal"]
 
 NOW = date.today()
 

@@ -16,13 +16,12 @@ void dlog_log(Record record)
 {
   DLogRecord o;
   strcpy(o.id, record.id);
-  for (int i = 0; i < record.max_inputs; i++)
+  for (int i = 0; i < MAX_INPUTS; i++)
   {
-    o.values[i] = record.values[i];
+    o.values[i] = i < record.max_inputs ? record.values[i] : 0;
   }
   o.date = record.date;
 
-  
   DataLoggingResult result = data_logging_log(s_session_ref, &o, 1);
   DEBUG("Send: %d bytes", sizeof(DLogRecord));
 
