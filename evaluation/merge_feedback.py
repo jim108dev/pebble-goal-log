@@ -8,9 +8,9 @@ import os
 import os.path
 import shutil
 import tempfile
+from datetime import datetime
 
 import pandas as pd
-from pandas.core.dtypes.missing import isna
 
 from util import get_conf
 
@@ -28,10 +28,9 @@ def main(conf):
     df = pd.concat([log_df, feedback_df])
 
     df.to_csv(path_or_buf=conf.log_filename,
-              columns=OUTPUT_COLUMNS, index=False, sep=";")
+              columns=OUTPUT_COLUMNS, index=False, sep=";", mode='a', header=False)
 
-    shutil.move(conf.feedback_filename, tempfile.gettempdir())
-
+    os.remove(conf.feedback_filename)
 
 if __name__ == "__main__":
     main(get_conf())
