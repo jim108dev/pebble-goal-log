@@ -119,12 +119,13 @@ static void show_first_window()
 
 static void show_last_window()
 {
-  InfoConfig *c = malloc(sizeof(InfoConfig));
+  dlog_deinit();
 
   uint8_t max_records = pers_read_max_records();
   DEBUG("Read max_records %d", max_records);
-
-  dlog_deinit();
+  
+  InfoConfig *c = malloc(sizeof(InfoConfig));
+  c->action=NULL;
   strcpy(c->main, "All goals done for today. Please run 'pebble_download.py'.");
   strcpy(c->head_left, "");
   strcpy(c->head_right, "");

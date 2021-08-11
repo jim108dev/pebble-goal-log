@@ -37,7 +37,7 @@ static void parse_into_labels(Record *record, char *data)
 
   for (int i = 0; i < record->max_inputs; i++)
   {
-    strcpy(record->labels[i], data_processor_get_string(state));
+    small_textcpy(record->labels[i], data_processor_get_string(state));
   }
   data_processor_destroy(state);
 }
@@ -60,13 +60,15 @@ static void parse_into_record(Record *record, char *data)
   small_textcpy(record->id, data_processor_get_string(state));
   textcpy(record->label, data_processor_get_string(state));
 
-  char labels_data[MAX_TEXT_LEN];
-  textcpy(labels_data, data_processor_get_string(state));
+  uint8_t combined_len = MAX_INPUTS*(MAX_SMALL_TEXT_LEN+1);
+  char labels_data[combined_len];
+
+  snprintf(labels_data, combined_len, "%s", data_processor_get_string(state));
   parse_into_max_inputs(record, labels_data);
   parse_into_labels(record, labels_data);
 
-  char values_data[MAX_TEXT_LEN];
-  textcpy(values_data, data_processor_get_string(state));
+  char values_data[MAX_INPUTS*(MAX_SMALL_TEXT_LEN+1)];
+  snprintf(values_data, combined_len, "%s", data_processor_get_string(state));
   parse_into_values(record, values_data);
 
   textcpy(record->goal, data_processor_get_string(state));
