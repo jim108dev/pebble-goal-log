@@ -38,7 +38,6 @@ static uint8_t get_max_inputs(Record record)
 
 static void parse_data(Record *record, char *data)
 {
-  DEBUG("Parse %s", data);
   ProcessingState *state = data_processor_create(data, ';');
   dp_fill_small_text(record->id, state);
   dp_fill_small_text(record->label, state);
@@ -48,13 +47,13 @@ static void parse_data(Record *record, char *data)
     dp_fill_small_text(record->labels[i], state);
     record->values[i] = data_processor_get_int(state);
   }
+  
   dp_fill_small_text(record->goal, state);
   record->left = data_processor_get_int(state);
 
   data_processor_destroy(state);
 
   record->date = 0;
-
   record->max_inputs = get_max_inputs(*record);
 }
 
@@ -64,7 +63,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context)
 
   if (packet_contains_key(iter, DOWNLOAD_KEY_MAX))
   {
-    s_max_records = packet_get_uint8(iter, DOWNLOAD_KEY_MAX);
+    s_max_records = packet_get_integer(iter, DOWNLOAD_KEY_MAX);
     s_records = malloc(sizeof(Record) * s_max_records);
 
     DEBUG("Max records (%d) received.", s_max_records);

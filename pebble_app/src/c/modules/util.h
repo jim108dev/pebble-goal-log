@@ -4,9 +4,6 @@
 #include <pebble-packet/pebble-packet.h>
 #include <@smallstoneapps/data-processor/data-processor.h>
 
-uint8_t packet_get_uint8(DictionaryIterator *inbox_iter, int key);
-void time_to_string(char buf[MAX_TEXT_LEN], time_t rawtime);
-void record_to_string(char buf[MAX_TEXT_LEN], Record r);
 
 //Replaced __FILE__ by __FUNCTION__ because it is more helpful.
 #define DISABLE_LOGGING false
@@ -29,6 +26,9 @@ void record_to_string(char buf[MAX_TEXT_LEN], Record r);
 
 #define FREE_SAFE(ptr) if (NULL != ptr) { free(ptr); ptr = NULL; }
 
+void record_to_string(char buf[MAX_TEXT_LEN], Record r);
+
+void time_to_string(char buf[MAX_TEXT_LEN], time_t rawtime);
 int textcpy(char * dest, const char * src);
 int small_textcpy(char * dest, const char * src);
 int sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max);
