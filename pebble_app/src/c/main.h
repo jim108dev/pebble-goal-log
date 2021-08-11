@@ -12,10 +12,17 @@
 #include "windows/input_window.h"
 #include "windows/menu_window.h"
 
+typedef struct MenuItem
+{
+    uint8_t ref;
+    char label[MAX_SMALL_TEXT_LEN];
+
+} MenuItem;   
+
 static void on_finish_record(uint8_t values[], void *data);
 static void show_first_window();
 static void show_last_window();
-static void load_records();
+static void cache_menu();
 static void on_show_goals(void *data);
 static void on_show_goal_detail(uint8_t select_num, void *data);
 static void download_success(Record *records, uint8_t max_records);

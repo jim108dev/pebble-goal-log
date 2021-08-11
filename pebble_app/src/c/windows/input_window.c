@@ -126,7 +126,7 @@ static void window_load(Window *window)
   int16_t inputs_y = bounds.size.h - ROW_HEIGHT * s_config->max_inputs;
   GRect main_bounds = GRect(PADDING, HEAD_HEIGHT, bounds.size.w - PADDING, inputs_y);
   s_main_layer = text_layer_create(main_bounds);
-  //text_layer_set_font(s_main_layer, fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
+  text_layer_set_font(s_main_layer, fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
   text_layer_set_text(s_main_layer, s_config->main);
   set_color_theme(s_main_layer, false);
   text_layer_set_text_alignment(s_main_layer, GTextAlignmentLeft);

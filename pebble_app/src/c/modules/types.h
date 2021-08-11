@@ -6,7 +6,6 @@
 #define MAX_TEXT_LEN          30
 #define MAX_INPUTS             4
 
-//id;text;count_names;count_values;goal;left
 typedef struct Record
 {
     char id[MAX_SMALL_TEXT_LEN];                          //  20 bytes
@@ -22,11 +21,3 @@ typedef struct Record
 
 typedef void (*DownloadSuccessCallback)(Record records[], uint8_t max_records);
 typedef void (*DownloadFailCallback)(char message[MAX_TEXT_LEN]);
-
-typedef struct CurrentRecord
-{
-    uint8_t num;
-    uint8_t max;
-    Record *record;
-
-} CurrentRecord;
