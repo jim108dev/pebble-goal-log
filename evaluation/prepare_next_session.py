@@ -4,18 +4,18 @@
  Create a new file for the next session based on the log.
 """
 
-from datetime import date
+import logging
+from datetime import date, datetime
 
 import pandas as pd
 from pandas.core.dtypes.missing import isna
 
-from algo_sm2 import supermemo_2
 from util import get_conf
 
 OUTPUT_COLUMNS = ["id", "label", "l1", "v1",
                   "l2", "v2", "l3", "v3", "l4", "v4", "goal"]
 
-NOW = date.today()
+NOW = datetime.today()
 
 # https://note.nkmk.me/en/python-check-int-float/
 def is_integer(n):
@@ -26,19 +26,43 @@ def is_integer(n):
     else:
         return float(n).is_integer()
 
+def countdown(last_processed, waiting_period):
+    dt_last_stop = date.fromtimestamp(int(last_processed))
+    delta = NOW - dt_last_stop
+    days_past = delta.days
+    return waiting_period - days_past
 
 def to_string(x):
     return str(int(x)) if is_integer(x) else x
 
 def main(conf):
-    df = pd.read_csv(conf.reference_filename, sep=';')
+    r_df = pd.read_csv(conf.reference_filename, sep=';')
+
+    r_df["stop"] = pd.to_datetime(r_df['stop'].astype('datetime64[ns]'), unit='s')
+    r_df = r_df[r_df["stop"]>=NOW]
+
+    l_df = pd.read_csv(conf.log_filename, sep=';')
+
+    l_df.sort_values('date').drop_duplicates(['id'])
+
+    df = r_df.join(l_df, lsuffix="_ref")
 
     df["v1"] = df["v1"].apply(to_string)
     df["v2"] = df["v2"].apply(to_string)
     df["v3"] = df["v3"].apply(to_string)
     df["v4"] = df["v4"].apply(to_string)
 
-    df.head(20).to_csv(path_or_buf=conf.next_session_filename,
+    df["last_processed"] = pd.to_datetime(df['date'].astype('datetime64[ns]'), unit='s')
+    
+    df['countdown'] = df.apply(lambda x: 0 if isna(x['last_processed']) else countdown(
+        x['last_processed'], x['step']), axis=1)
+
+    df = df[df['countdown'] <= 0]
+
+    print(df.head())
+    #print(ref_df.dtypes)
+    #exit()
+    df.to_csv(path_or_buf=conf.next_session_filename,
                        columns=OUTPUT_COLUMNS, index=False, sep=";")
 
 

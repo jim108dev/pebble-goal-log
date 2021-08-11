@@ -22,15 +22,20 @@ def main(conf):
         print("%s does not exist" % conf.feedback_filename)
         return
 
-    feedback_df = pd.read_csv(conf.feedback_filename, sep=';')
-    log_df = pd.read_csv(conf.log_filename, sep=';')
+    f_df = pd.read_csv(conf.feedback_filename, sep=';')
+    l_df = pd.read_csv(conf.log_filename, sep=';')
 
-    df = pd.concat([log_df, feedback_df])
+
+    f_df["date_ms"] = f_df["date"].apply(datetime.fromtimestamp)
+    f_df["date"] = pd.to_datetime(f_df['date_ms'].astype('datetime64[ns]'), unit='s', format="%y-%m%d")
+    f_df["date"] = f_df["date"].dt.date
+
+    df = pd.concat([l_df, f_df])
 
     df.to_csv(path_or_buf=conf.log_filename,
-              columns=OUTPUT_COLUMNS, index=False, sep=";", mode='a', header=False)
+              columns=OUTPUT_COLUMNS, sep=";", mode='a', header=False)
 
-    os.remove(conf.feedback_filename)
+    #os.remove(conf.feedback_filename)
 
 if __name__ == "__main__":
     main(get_conf())
