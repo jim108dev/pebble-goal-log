@@ -11,17 +11,16 @@ import pandas as pd
 
 from util import get_conf
 
-LOG_COLUMNS = ["id", "values", "date"]
+LOG_COLUMNS = ["id", "v1","v2","v3","v4", "date"]
 
 NOW = (datetime.datetime.now() - datetime.datetime(1970, 1, 1)).total_seconds()
 
 def main(conf):
-    ref_df = pd.read_csv(conf.reference_filename, sep=';')
+    if os.path.isfile(conf.log_filename):
+        print("Log file exists. Bailing out!")
+        exit()
 
-    log_df = pd.DataFrame(columns=LOG_COLUMNS) if not os.path.isfile(
-        conf.log_filename) else pd.read_csv(conf.log_filename, sep=';')
-
-    df = ref_df.merge(log_df, on='id', how="left")
+    df = pd.DataFrame(columns=LOG_COLUMNS)
 
     df.to_csv(path_or_buf=conf.log_filename,
               columns=LOG_COLUMNS, index=False, sep=";")

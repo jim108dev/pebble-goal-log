@@ -14,7 +14,7 @@ from pandas.core.dtypes.missing import isna
 
 from util import get_conf
 
-OUTPUT_COLUMNS = ["id", "values", "date"]
+OUTPUT_COLUMNS = ["id", "v1","v2","v3","v4", "date"]
 
 
 def main(conf):

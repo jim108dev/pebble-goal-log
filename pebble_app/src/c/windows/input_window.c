@@ -123,8 +123,9 @@ static void window_load(Window *window)
   set_color_theme(s_head_right_layer, false);
   layer_add_child(window_layer, text_layer_get_layer(s_head_right_layer));
 
-  int16_t inputs_y = bounds.size.h - ROW_HEIGHT * s_config->max_inputs;
-  GRect main_bounds = GRect(PADDING, HEAD_HEIGHT, bounds.size.w - PADDING, inputs_y);
+  int16_t inputs_h = ROW_HEIGHT * s_config->max_inputs;
+  int16_t inputs_y = bounds.size.h - inputs_h;
+  GRect main_bounds = GRect(PADDING, HEAD_HEIGHT, bounds.size.w - PADDING, bounds.size.h - inputs_h);
   s_main_layer = text_layer_create(main_bounds);
   text_layer_set_font(s_main_layer, fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
   text_layer_set_text(s_main_layer, s_config->main);
