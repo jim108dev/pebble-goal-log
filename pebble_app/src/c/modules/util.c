@@ -27,12 +27,12 @@ uint8_t packet_get_uint8(DictionaryIterator *inbox_iter, int key)
 
 int textcpy(char *dest, const char *src)
 {
-    return snprintf(dest, MAX_SMALL_TEXT_LEN, "%s", src);
+    return snprintf(dest, MAX_TEXT_LEN, "%s", src);
 }
 
 int small_textcpy(char *dest, const char *src)
 {
-    return snprintf(dest, MAX_TEXT_LEN, "%s", src);
+    return snprintf(dest, MAX_SMALL_TEXT_LEN, "%s", src);
 }
 
 int sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max)
@@ -40,20 +40,22 @@ int sprint_progress(char text[MAX_SMALL_TEXT_LEN], uint8_t num, uint8_t max)
     return snprintf(text, MAX_SMALL_TEXT_LEN, "%d/%d", num, max);
 }
 
-
-bool ll_free_callback(void *object, void *context){
-  FREE_SAFE(object);
-  return true;
+bool ll_free_callback(void *object, void *context)
+{
+    FREE_SAFE(object);
+    return true;
 }
 
-int dp_fill_text(char *dest, ProcessingState* state){
+int dp_fill_text(char *dest, ProcessingState *state)
+{
     char *buf = data_processor_get_string(state);
     int n = textcpy(dest, buf);
     free(buf);
     return n;
 }
 
-int dp_fill_small_text(char *dest, ProcessingState* state){
+int dp_fill_small_text(char *dest, ProcessingState *state)
+{
     char *buf = data_processor_get_string(state);
     int n = small_textcpy(dest, buf);
     free(buf);

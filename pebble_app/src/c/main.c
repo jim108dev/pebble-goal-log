@@ -99,7 +99,7 @@ static void on_show_goal_detail(uint8_t select_num, void *data)
     strcpy(c->labels[i], record.labels[i]);
     c->values[i] = record.values[i];
   }
-  snprintf(c->main, MAX_TEXT_LEN, "%.14s:\n%.14s", record.label, record.goal);
+  snprintf(c->main, 80, "%.30s:\n%.30s", record.label, record.goal);
   c->max_inputs = record.max_inputs;
 
   input_window_init(c);
@@ -161,7 +161,6 @@ static void download_success(Record *records, uint8_t max_records)
       break;
     }
   }
-  download_deinit();
 
   pers_write_max_records(max_records);
 
@@ -181,6 +180,7 @@ static void init()
 
   AppLaunchReason appLaunchReason = launch_reason();
 
+  pers_sweep();
   show_first_window();
   if (appLaunchReason == APP_LAUNCH_PHONE)
   {

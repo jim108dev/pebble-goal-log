@@ -4,7 +4,7 @@
 #include "../modules/util.h"
 
 #define DARK_BACKGROUND true
-#define MAX_MENU_ITEMS 20
+#define MAX_MENU_ITEMS 30
 typedef void(ActionCallback)(uint8_t feedback, void *data);
 
 typedef struct MenuConfig

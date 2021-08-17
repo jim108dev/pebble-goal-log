@@ -46,7 +46,7 @@ The Pebble app works without a smartphone. The data is exchanged with a pc. Nece
 # Create `upload.csv`
 make prepare_next_session
 
-make start_emu
+make install_emu
 
 make upload_emu
 
@@ -64,7 +64,7 @@ make merge_feedback
 # Create `upload.csv`
 make prepare_next_session
 
-make start_watch
+make install_watch
 
 make upload_watch
 

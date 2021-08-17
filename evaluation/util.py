@@ -4,6 +4,7 @@
 """
 
 import argparse
+import logging
 from configparser import ConfigParser
 
 
@@ -20,5 +21,7 @@ def get_conf():
     conf.log_filename = parser.get('log', 'filename')
     conf.feedback_filename = parser.get('feedback', 'filename')
     conf.next_session_filename = parser.get('next_session', 'filename')
+
+    logging.basicConfig(level=parser.get('main', 'logging'))
 
     return conf

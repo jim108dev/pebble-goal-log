@@ -61,10 +61,8 @@ def main(conf):
     df['countdown'] = df.apply(lambda x: 0 if isna(x['last_processed']) else countdown(
         x['last_processed'], x['step']), axis=1)
 
-    #df = df[df['last_processed'] ++ timedelta(days=180)]
-
-    print(df.head())
-    exit()
+    logging.debug(df.head())
+    
     df.to_csv(path_or_buf=conf.next_session_filename,
                        columns=OUTPUT_COLUMNS, index=False, sep=";")
 

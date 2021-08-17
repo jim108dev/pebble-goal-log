@@ -11,6 +11,7 @@
 #define ROW_HEIGHT 24
 #define IS_DARK true
 #define COUNT_TIMEOUT 100
+#define INPUT_WINDOW_MAX_TEXT_LEN 80
 
 static void set_color_theme(TextLayer *layer, bool isInverted);
 
@@ -24,7 +25,7 @@ typedef struct InputConfig
     char head_right[MAX_SMALL_TEXT_LEN];
     char labels[MAX_INPUTS][MAX_SMALL_TEXT_LEN];
     uint8_t values[MAX_INPUTS];
-    char main[MAX_TEXT_LEN];
+    char main[INPUT_WINDOW_MAX_TEXT_LEN];
     InputDoneCallback *action;
     void *extra;
 

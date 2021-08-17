@@ -12,7 +12,7 @@ from datetime import datetime
 
 import pandas as pd
 
-from util import get_conf
+import logging
 
 OUTPUT_COLUMNS = ["id", "v1","v2","v3","v4", "date"]
 
@@ -31,6 +31,8 @@ def main(conf):
     f_df["date"] = f_df["date"].dt.date
 
     df = pd.concat([l_df, f_df])
+
+    logging.debug(df.head())
 
     df.to_csv(path_or_buf=conf.log_filename,
               columns=OUTPUT_COLUMNS, sep=";", mode='a', header=False)
